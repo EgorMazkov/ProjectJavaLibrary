@@ -12,7 +12,9 @@ public class JdbcDataSource {
 
     public JdbcDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5433/postgres");
+        config.setJdbcUrl("jdbc:postgresql://localhost:1543/postgres");
+        config.setUsername("postgres");
+        config.setPassword("1111");
         dataSource = new HikariDataSource(config);
     }
 
