@@ -4,7 +4,7 @@ public interface MessagesRepository {
     boolean checkUser(String idEmployee, String password);
     void save(String libraryCard, String booksCode, String dateOfIssue,
                 String dateOfDelivery);
-    void updateDelivery(String booksCode);
+    int updateDelivery(String booksCode);
 
     String searchForAuthor(String nameAuthor);
     String searchForNumber(String number);
@@ -21,6 +21,10 @@ public interface MessagesRepository {
     String listForBooks();
     String listForTicket();
 
-
+    boolean hasTheBookBeenIssued(String libraryCard, String booksCode);
     String booksThatWereNotReturned();
+
+    boolean checkAddTicket(String text);
+
+    String listOfBooksThatReadersHaveNotReturned(String text);
 }

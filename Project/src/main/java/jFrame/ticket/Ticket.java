@@ -13,6 +13,7 @@ public class Ticket extends JFrame {
     JButton addTicket = new JButton("Добавить читателя");
     JButton deleteTicket = new JButton("Удалить читателя");
     JButton listForTicket = new JButton("Список всех читателей");
+    JButton listOfBooksThatReadersHaveNotReturned = new JButton("Список книг которые не вернули читатели");
     JButton back = new JButton("Вернуться назад");
 
     public Ticket() throws HeadlessException {
@@ -21,6 +22,7 @@ public class Ticket extends JFrame {
         jPanel.add(addTicket);
         jPanel.add(deleteTicket);
         jPanel.add(listForTicket);
+        jPanel.add(listOfBooksThatReadersHaveNotReturned);
         jPanel.add(back);
 
         add(jPanel, BorderLayout.CENTER);
@@ -30,6 +32,14 @@ public class Ticket extends JFrame {
         deleteTicket.addActionListener(this::deleteTicket);
         listForTicket.addActionListener(this::listForTicket);
         back.addActionListener(this::backForWindowJFrame);
+        listOfBooksThatReadersHaveNotReturned.addActionListener(this::listOfBooks);
+    }
+
+    private void listOfBooks(ActionEvent actionEvent) {
+        listOfBooksThatReadersHaveNotReturned.addActionListener(e -> {
+            setVisible(false);
+            startListOfBooksThatReadersHaveNotReturned();
+        });
     }
 
     private void listForTicket(ActionEvent actionEvent) {

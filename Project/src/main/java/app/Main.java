@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import static jFrame.utils.LaunchingANewWindow.startLibraryJFrame;
-// TODO реализовать вывод на окно всех выданных книг (которые еще не вернули)
 // TODO сделать визуал JFrame для более удобного вывода
 // TODO сделать читебельным окно "Добавть новую книгу" и "Добавить сотрудника" и "Добавить читателя"
 

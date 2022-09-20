@@ -10,7 +10,6 @@ import static app.Main.MESSAGES_REPOSITORY;
 import static jFrame.utils.LaunchingANewWindow.*;
 
 public class DeliveryBooks extends JFrame {
-    String lc, bc, doi, dod;
 
     JLabel enterLibraryCard = new JLabel("Введите номер чит билета: ");
     JTextField libraryCard = new JTextField(10);
@@ -52,21 +51,20 @@ public class DeliveryBooks extends JFrame {
     }
 
     private void Update(ActionEvent actionEvent) {
-        lc = libraryCard.getText();
-        bc = booksCode.getText();
-        doi = dateOfIssue.getText();
-        dod = dateOfDelivery.getText();
-        if (!doi.matches("\\d{2}\\.\\d{2}\\.\\d{4}") || !dod.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
+        if (!dateOfIssue.getText().matches("\\d{2}\\.\\d{2}\\.\\d{4}") ||
+                !dateOfDelivery.getText().matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
             PrintText printText = new PrintText("Ошибка ввода даты. \n Должно выглядить в виде XX.XX.XXXX");
             setVisible(false);
             startBook();
         }
-        MESSAGES_REPOSITORY.save(lc, bc, doi, dod);
-        MESSAGES_REPOSITORY.updateDelivery(bc);
+        if (!MESSAGES_REPOSITORY.hasTheBookBeenIssued(libraryCard.getText(), booksCode.getText())) {
+            MESSAGES_REPOSITORY.updateDelivery(booksCode.getText());
+            MESSAGES_REPOSITORY.save(libraryCard.getText(), booksCode.getText(),
+                    dateOfIssue.getText(), dateOfDelivery.getText());
+        }
         update.addActionListener(e -> {
             setVisible(false);
             startBook();
         });
-
     }
 }

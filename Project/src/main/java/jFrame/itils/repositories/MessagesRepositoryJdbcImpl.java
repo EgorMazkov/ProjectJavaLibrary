@@ -9,15 +9,13 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
     private final DataSource dataSource;
     private final String SQL_CHECK_PASSWORD = "SELECT Пароль FROM library.treaty WHERE Номер_сотрудника = ?";
-    private final String SQL_SELECT_TAKEN_BOOKS = "SELECT * FROM library.taken_books";
+    private final String SQL_SELECT_DELIVERY = "SELECT * FROM library.delivery";
     private final String SQL_INSERT_DELIVERY = "INSERT INTO library.delivery (Чит_билет, Код_книги, Дата_выдачи, Дата_возврата) VALUES (";
-    private final String SQL_INSERT_TAKEN_BOOKS = "INSERT INTO library.taken_books (Читательский_билет, Номер_книги, Книгу_вернули) VALUES (";
     private final String SQL_CHECK_NUMBER_BOOKS = "SELECT Количество_книг FROM library.books WHERE Номер_книги = ";
     private final String SQL_SEARCH_FOR_AUTHOR = "SELECT * library.books WHERE Автор = ";
     private final String SQL_SEARCH_FOR_NUMBER = "SELECT * FROM library.books WHERE Номер_книги = ";
     private final String SQL_ADD_BOOKS = "INSERT INTO library.books (Название_книги, Количество_книг, Автор, Год_издания) VALUES ";
     private final String SQL_ADD_EMPLOYEE = "INSERT INTO library.treaty (Номер_сотрудника, Пароль, Должность, Номер_телефона, Фамилия, Имя, Отчество, ИНН, СНИЛС, Дата_рождения, Дата_начала_работы) VALUES (";
-    private final String SQL_SAVE_TAKEN_BOOKS = "INSERT INTO library.taken_books (Читательский_билет, Номер_книги, Дата_возврата, Книгу_вернули) VALUES (";
     private final String SQL_DELETE_TICKET = "DELETE FROM library.ticket WHERE Читательский_билет = ";
     private final String SQL_SAVE_TICKET = "INSERT INTO library.ticket (Фамилия, Имя, Отчество, Адрес, Номер_телефона) VALUES (";
 
@@ -49,29 +47,31 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
     @Override
     public void save(String libraryCard, String booksCode, String dateOfIssue, String dateOfDelivery) {
-
         connection(SQL_INSERT_DELIVERY + "' " + libraryCard + "', '" + booksCode + "', '" + dateOfIssue + "', '" + dateOfDelivery + "')");
-        connection(SQL_INSERT_TAKEN_BOOKS + "'" + libraryCard + "', '" + booksCode + "', '" + false + "')");
     }
 
     @Override
-    public void updateDelivery(String booksCode) {
-        int lengthBooks = 0;
+    public int updateDelivery(String booksCode) {
+        int numberOfBooks = 0;
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQL_CHECK_NUMBER_BOOKS + booksCode);
 
             if (!resultSet.next()) {
-                return;
+                return 0;
             }
-            lengthBooks = resultSet.getInt(1);
+            numberOfBooks = resultSet.getInt(1);
+            if (numberOfBooks == 0) {
+                PrintText printText = new PrintText("Данной книги нет в наличие");
+                return -1;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        lengthBooks -= 1;
-        connection("UPDATE library.books SET Количество_книг = " + lengthBooks + " WHERE Номер_книги = " + booksCode);
-
+        numberOfBooks -= 1;
+        connection("UPDATE library.books SET Количество_книг = " + numberOfBooks + " WHERE Номер_книги = " + booksCode);
+        return 0;
     }
 
     @Override
@@ -104,7 +104,8 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
     @Override
     public void returnBook(String libraryCard, String dateReturnBook, String numberBook) {
-        int lengthBooks = 0;
+        int numberOfBooks = 0;
+        int issueСode;
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
@@ -113,13 +114,36 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
             if (!resultSet.next()) {
                 return;
             }
-            lengthBooks = resultSet.getInt(1);
+            numberOfBooks = resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        connection("UPDATE library.books SET Количество_книг = " + ++lengthBooks + " WHERE Номер_книги = " + numberBook);
+        connection("UPDATE library.books SET Количество_книг = " + ++numberOfBooks + " WHERE Номер_книги = " + numberBook);
+        issueСode = checkIssueCode(libraryCard, numberBook);
+        if (issueСode == -1) {
+            PrintText printText = new PrintText("Книга не выдавалась!");
+            return;
+        }
+        connection("DELETE FROM library.delivery WHERE Код_выдачи = " + issueСode);
+    }
 
+    private int checkIssueCode(String libraryCard, String numberBook) {
+        String sql = "SELECT * FROM library.delivery WHERE Чит_билет = " + libraryCard;
+
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                if (resultSet.getString(2).equals(libraryCard) && resultSet.getString(3).equals(numberBook)) {
+                    return resultSet.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
@@ -189,18 +213,60 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
     }
 
 
-
     @Override
     public String booksThatWereNotReturned() {
         String message = "";
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_TAKEN_BOOKS);
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_DELIVERY);
 
             while (resultSet.next()) {
-                message += "Читательский билет: " + String.valueOf(resultSet.getInt(1));
-                message += "\nНомер книги: " + resultSet.getString(2);
+                message += "Код выдачи: " + resultSet.getInt(1);
+                message += "\nЧитательский билет: " + resultSet.getString(2);
+                message += "\nКод книги: " + resultSet.getString(3);
+                message += "\nДата выдачи: " + resultSet.getString(4);
+                message += "\nДата возврата: " + resultSet.getString(5);
+                message += "\n----------------------------------------------------------\n";
+            }
+            return message;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean checkAddTicket(String phoneNumber) {
+        String phone;
+        String sql = "SELECT * FROM library.ticket WHERE Номер_телефона = " + phoneNumber;
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            resultSet.next();
+            phone = resultSet.getString(6);
+            if (phone.equals(phoneNumber)) {
+                return true;
+            }
+        } catch (SQLException ignored) {
+        }
+        return false;
+    }
+
+    @Override
+    public String listOfBooksThatReadersHaveNotReturned(String text) {
+        String message = "";
+        String sql = "SELECT * FROM library.delivery WHERE Чит_билет = " + text;
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                message += "Код выдачи: " + resultSet.getInt(1);
+                message += "\nЧитательский билет: " + resultSet.getString(2);
+                message += "\nКод Книги: " + resultSet.getString(3);
+                message += "\nДата выдачи: " + resultSet.getString(4);
+                message += "\nДата возврата: " + resultSet.getString(5);
                 message += "\n----------------------------------------------------------\n";
             }
             return message;
@@ -231,8 +297,25 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    @Override
+    public boolean hasTheBookBeenIssued(String libraryCard, String booksCode) {
+        String libCard, code;
+        String sql = "SELECT * FROM library.delivery WHERE Чит_билет = " + libraryCard;
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
 
+            resultSet.next();
+            libCard = resultSet.getString(2);
+            code = resultSet.getString(3);
+            if (libCard.equals(libraryCard) && booksCode.equals(code)) {
+                return true;
+            }
+        } catch (SQLException ignored) {
+        }
+        return false;
     }
 
     public void connection(String str) {
@@ -242,6 +325,9 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
             resultSet.next();
         } catch (SQLException e) {
+            String ea = String.valueOf(e);
+            if (!ea.matches("\\w+:Запрос не вернул результатов"))
+                return;
             String MESSAGE = "Введен неправильный данные!!!";
             PrintText printText = new PrintText(MESSAGE);
         }

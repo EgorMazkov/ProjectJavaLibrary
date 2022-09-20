@@ -47,4 +47,3 @@ CREATE table if not exists library.delivery
     foreign key (Код_книги) references library.books,
     foreign key (Чит_билет) references library.ticket
 );
-
