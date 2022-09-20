@@ -1,4 +1,4 @@
-package jFrame.delivery;
+package jFrame.book;
 
 import jFrame.print.PrintText;
 
@@ -7,39 +7,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static app.Main.newWindowJFrame;
-import static jFrame.books.Books.newSearchBook;
+import static jFrame.utils.LaunchingANewWindow.*;
 
-public class DeliveryJFrame extends JFrame {
+public class DeliveryBooks extends JFrame {
     String lc, bc, doi, dod;
-    JLabel window = new JLabel();
-    JLabel enterLibraryCard = new JLabel("Введите номер читательского билета: ");
+
+    JLabel enterLibraryCard = new JLabel("Введите номер чит билета: ");
     JTextField libraryCard = new JTextField(10);
-    JLabel enterBooksCode = new JLabel("Введите код книги: ");
-    JTextField booksCode = new JTextField(10);
     JLabel enterDateOfIssue = new JLabel("Введите дату выдачи: ");
-    JTextField dateOfIssue = new JTextField(30);
+    JTextField dateOfIssue = new JTextField(10);
     JLabel enterDateOfDelivery = new JLabel("Введите дату возврата: ");
-    JTextField dateOfDelivery = new JTextField(30);
-    JButton update = new JButton("Сохранить");
-
+    JTextField dateOfDelivery = new JTextField(10);
+    JButton update = new JButton("Сохранить данные");
     JButton back = new JButton("Вернуться назад");
+    JLabel enterBooksCode = new JLabel("Введите номер книги: ");
+    JTextField booksCode = new JTextField(10);
 
-    public DeliveryJFrame() {
-
-
+    public DeliveryBooks() {
+        super("Выдача книги");
         JPanel buttonsPanel = new JPanel(new FlowLayout());
-        buttonsPanel.add(window, BorderLayout.SOUTH);
-        buttonsPanel.add(enterLibraryCard);
-        buttonsPanel.add(libraryCard);
-        buttonsPanel.add(enterBooksCode);
-        buttonsPanel.add(booksCode);
-        buttonsPanel.add(enterDateOfIssue);
-        buttonsPanel.add(dateOfIssue);
-        buttonsPanel.add(enterDateOfDelivery);
-        buttonsPanel.add(dateOfDelivery);
-        buttonsPanel.add(update);
-        buttonsPanel.add(back);
+        buttonsPanel.add(enterLibraryCard, BorderLayout.WEST);
+        buttonsPanel.add(libraryCard, BorderLayout.EAST);
+        buttonsPanel.add(enterBooksCode, BorderLayout.WEST);
+        buttonsPanel.add(booksCode, BorderLayout.EAST);
+        buttonsPanel.add(enterDateOfIssue, BorderLayout.WEST);
+        buttonsPanel.add(dateOfIssue, BorderLayout.EAST);
+        buttonsPanel.add(enterDateOfDelivery, BorderLayout.WEST);
+        buttonsPanel.add(dateOfDelivery, BorderLayout.EAST);
+        buttonsPanel.add(update, BorderLayout.WEST);
+        buttonsPanel.add(back, BorderLayout.EAST);
 
         add(buttonsPanel, BorderLayout.NORTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -51,7 +47,7 @@ public class DeliveryJFrame extends JFrame {
     private void backForWindowJFrame(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            newWindowJFrame();
+            startBook();
         });
     }
 
@@ -63,13 +59,13 @@ public class DeliveryJFrame extends JFrame {
         if (!doi.matches("\\d{2}\\.\\d{2}\\.\\d{4}") || !dod.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
             PrintText printText = new PrintText("Ошибка ввода даты. \n Должно выглядить в виде XX.XX.XXXX");
             setVisible(false);
-            newSearchBook();
+            startBook();
         }
         MESSAGES_REPOSITORY.save(lc, bc, doi, dod);
         MESSAGES_REPOSITORY.updateDelivery(bc);
         update.addActionListener(e -> {
             setVisible(false);
-            newSearchBook();
+            startBook();
         });
 
     }

@@ -1,74 +1,63 @@
 package jFrame.employee;
 
-import jFrame.window.WindowJFrame;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static app.Main.newWindowJFrame;
+import static jFrame.utils.LaunchingANewWindow.*;
 
 public class AddEmployee extends JFrame {
     public static int indexForNumberEmployee = 2;
     JLabel enterSurnameEmployee = new JLabel("Введите Фамилию :");
-    JTextField surnameEmployee = new JTextField();
-
-    JLabel enternameEmployee = new JLabel("Введите Имя :");
-    JTextField nameEmployee = new JTextField();
-
+    JTextField surnameEmployee = new JTextField(20);
+    JLabel enterNameEmployee = new JLabel("Введите Имя :");
+    JTextField nameEmployee = new JTextField(20);
     JLabel enterMiddleNameEmployee = new JLabel("Введите Отчество :");
-    JTextField middleNameEmployee = new JTextField();
-
+    JTextField middleNameEmployee = new JTextField(20);
     JLabel enterINNEmployee = new JLabel("Введите ИНН:");
-    JTextField INNEmployee = new JTextField();
-
+    JTextField INNEmployee = new JTextField(20);
     JLabel enterSNILSEmployee = new JLabel("Введите СНИЛС :");
-    JTextField SNILSEmployee = new JTextField();
-
+    JTextField SNILSEmployee = new JTextField(20);
     JLabel enterDateOfBirthEmployee = new JLabel("Введите Дата рождения :");
-    JTextField dateOfBirthEmployee = new JTextField();
-
+    JTextField dateOfBirthEmployee = new JTextField(20);
     JLabel enterStartDateEmployee = new JLabel("Введите Дача начала работы :");
-    JTextField startDateEmployee = new JTextField();
-
+    JTextField startDateEmployee = new JTextField(20);
     JLabel enterPostEmployee = new JLabel("Введите должность сотрудника: ");
-    JTextField postEmployee = new JTextField();
-
+    JTextField postEmployee = new JTextField(20);
     JLabel enterPhoneNumberEmployee = new JLabel("Введите номер телефона: ");
-    JTextField phoneNumberEmployee = new JTextField();
-
-    JLabel enterPasswordEmployee = new JLabel("Введите новый пароль сотрудника: ");
-    JTextField passwordEmployee = new JTextField();
-
-    JButton addEmployee = new JButton("Добавить");
+    JTextField phoneNumberEmployee = new JTextField(20);
+    JButton addEmployee = new JButton("Добавить сотрудника");
+    JLabel enterPasswordEmployee = new JLabel("Пароль сотрудника");
+    JTextField passwordEmployee = new JTextField(20);
     JButton back = new JButton("Вернуться назад");
 
     public AddEmployee() throws HeadlessException {
+        super("Добавление сотрудника");
         JPanel jPanel = new JPanel(new FlowLayout());
 
         jPanel.add(enterSurnameEmployee, BorderLayout.CENTER);
-        jPanel.add(surnameEmployee);
-        jPanel.add(enternameEmployee);
-        jPanel.add(nameEmployee);
-        jPanel.add(enterMiddleNameEmployee);
-        jPanel.add(middleNameEmployee);
-        jPanel.add(enterINNEmployee);
-        jPanel.add(INNEmployee);
-        jPanel.add(enterSNILSEmployee);
-        jPanel.add(SNILSEmployee);
-        jPanel.add(enterDateOfBirthEmployee);
-        jPanel.add(dateOfBirthEmployee);
-        jPanel.add(enterStartDateEmployee);
-        jPanel.add(startDateEmployee);
-        jPanel.add(enterPostEmployee);
-        jPanel.add(postEmployee);
-        jPanel.add(enterPhoneNumberEmployee);
-        jPanel.add(phoneNumberEmployee);
-        jPanel.add(enterPasswordEmployee);
-        jPanel.add(passwordEmployee);
-        jPanel.add(addEmployee);
-        jPanel.add(back);
+        jPanel.add(surnameEmployee, BorderLayout.CENTER);
+        jPanel.add(enterNameEmployee, BorderLayout.CENTER);
+        jPanel.add(nameEmployee, BorderLayout.CENTER);
+        jPanel.add(enterMiddleNameEmployee, BorderLayout.CENTER);
+        jPanel.add(middleNameEmployee, BorderLayout.CENTER);
+        jPanel.add(enterINNEmployee, BorderLayout.CENTER);
+        jPanel.add(INNEmployee, BorderLayout.CENTER);
+        jPanel.add(enterSNILSEmployee, BorderLayout.CENTER);
+        jPanel.add(SNILSEmployee, BorderLayout.CENTER);
+        jPanel.add(enterDateOfBirthEmployee, BorderLayout.CENTER);
+        jPanel.add(dateOfBirthEmployee, BorderLayout.CENTER);
+        jPanel.add(enterStartDateEmployee, BorderLayout.CENTER);
+        jPanel.add(startDateEmployee, BorderLayout.CENTER);
+        jPanel.add(enterPostEmployee, BorderLayout.CENTER);
+        jPanel.add(postEmployee, BorderLayout.CENTER);
+        jPanel.add(enterPhoneNumberEmployee, BorderLayout.CENTER);
+        jPanel.add(phoneNumberEmployee, BorderLayout.CENTER);
+        jPanel.add(enterPasswordEmployee, BorderLayout.CENTER);
+        jPanel.add(passwordEmployee, BorderLayout.CENTER);
+        jPanel.add(addEmployee, BorderLayout.CENTER);
+        jPanel.add(back, BorderLayout.CENTER);
 
         add(jPanel, BorderLayout.SOUTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -80,10 +69,7 @@ public class AddEmployee extends JFrame {
     private void backForWindowJFrame(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            Employee employee = new Employee();
-            employee.setBounds(300, 300, 1000, 500);
-            employee.setLayout(new GridLayout(3, 2, 2, 2));
-            employee.setVisible(true);
+            startEmployee();
         });
     }
 
@@ -103,10 +89,7 @@ public class AddEmployee extends JFrame {
         );
         addEmployee.addActionListener(e -> {
             setVisible(false);
-            Employee employee = new Employee();
-            employee.setBounds(300, 300, 1000, 500);
-            employee.setLayout(new GridLayout(3, 2, 2, 2));
-            employee.setVisible(true);
+            startEmployee();
         });
     }
 }

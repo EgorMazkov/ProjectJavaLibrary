@@ -1,29 +1,31 @@
-package jFrame.books;
+package jFrame.book;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static jFrame.books.Books.newSearchBook;
+import static jFrame.utils.LaunchingANewWindow.*;
+import static jFrame.utils.LaunchingANewWindow.startBook;
 
 public class AddBooks extends JFrame {
-    JLabel window = new JLabel("");
+
     JLabel enterNameBook = new JLabel("Введите название книги: ");
-    JTextField nameBooks = new JTextField();
+    JTextField nameBooks = new JTextField(10);
     JLabel enterBookAuthor = new JLabel("Введите автора книги: ");
-    JTextField bookAuthor = new JTextField();
+    JTextField bookAuthor = new JTextField(10);
     JLabel enterNumberOfBooks = new JLabel("Введите количество книг: ");
-    JTextField numberOfBooks = new JTextField();
+    JTextField numberOfBooks = new JTextField(10);
     JLabel enterTheYearOfPubloshing = new JLabel("Введите год издания: ");
-    JTextField theYearOfPublishingBooks = new JTextField(4);
-    JButton addBooks = new JButton("Добавить");
+    JTextField theYearOfPublishingBooks = new JTextField(10);
+    JButton addBooks = new JButton("Добавить данные");
     JButton back = new JButton("Вернуться назад");
+
     public AddBooks() throws HeadlessException {
+        super("Добавление книги");
 
-        JPanel buttonJPanel = new JPanel(new GridLayout());
+        JPanel buttonJPanel = new JPanel(new FlowLayout());
 
-        buttonJPanel.add(window, BorderLayout.NORTH);
         buttonJPanel.add(enterNameBook);
         buttonJPanel.add(nameBooks);
         buttonJPanel.add(enterBookAuthor);
@@ -45,7 +47,7 @@ public class AddBooks extends JFrame {
     private void backForSearchBooks(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            newSearchBook();
+            startBook();
         });
     }
 
@@ -54,7 +56,7 @@ public class AddBooks extends JFrame {
                 bookAuthor.getText(), theYearOfPublishingBooks.getText());
         addBooks.addActionListener(e -> {
             setVisible(false);
-            newSearchBook();
+            startBook();
         });
     }
 }

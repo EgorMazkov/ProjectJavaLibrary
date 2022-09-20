@@ -1,29 +1,26 @@
-package jFrame.books;
+package jFrame.book;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static app.Main.newWindowJFrame;
-import static jFrame.books.Books.newSearchBook;
+import static jFrame.utils.LaunchingANewWindow.*;
 
 public class ReturnOfTheBook extends JFrame {
-
     JLabel enterLibraryCard = new JLabel("Введите номер читательского билета: ");
-    JTextField libraryCard = new JTextField();
-
+    JTextField libraryCard = new JTextField(10);
     JLabel enterDateReturnOfTheBook = new JLabel("Введите дату возврата книги: ");
-    JTextField dateReturnOfTheBook = new JTextField();
-
+    JTextField dateReturnOfTheBook = new JTextField(10);
     JLabel enterNumberBook = new JLabel("Введите номер книги: ");
-    JTextField numberBook = new JTextField();
-
-    JButton save = new JButton("Сохранить");
+    JTextField numberBook = new JTextField(10);
+    JButton save = new JButton("Сохранить данные");
     JButton back = new JButton("Вернуться назад");
 
     public ReturnOfTheBook() throws HeadlessException {
-        JPanel jPanel = new JPanel(new GridLayout());
+        super("Возврат книги");
+
+        JPanel jPanel = new JPanel(new FlowLayout());
 
         jPanel.add(enterLibraryCard);
         jPanel.add(libraryCard);
@@ -43,7 +40,7 @@ public class ReturnOfTheBook extends JFrame {
     private void backForWindowJFrame(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            newWindowJFrame();
+            startBook();
         });
     }
 
@@ -53,7 +50,7 @@ public class ReturnOfTheBook extends JFrame {
                 numberBook.getText());
         save.addActionListener(e -> {
             setVisible(false);
-            newSearchBook();
+            startBook();
         });
     }
 }

@@ -6,8 +6,10 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 public class MessagesRepositoryJdbcImpl implements MessagesRepository {
+
     private final DataSource dataSource;
-    private final String SQL_CHECK_PASSWORD = "SELECT Пароль FROM library.treaty WHERE Номер_сотрудника = ";
+    private final String SQL_CHECK_PASSWORD = "SELECT Пароль FROM library.treaty WHERE Номер_сотрудника = ?";
+    private final String SQL_SELECT_TAKEN_BOOKS = "SELECT * FROM library.taken_books";
     private final String SQL_INSERT_DELIVERY = "INSERT INTO library.delivery (Чит_билет, Код_книги, Дата_выдачи, Дата_возврата) VALUES (";
     private final String SQL_INSERT_TAKEN_BOOKS = "INSERT INTO library.taken_books (Читательский_билет, Номер_книги, Книгу_вернули) VALUES (";
     private final String SQL_CHECK_NUMBER_BOOKS = "SELECT Количество_книг FROM library.books WHERE Номер_книги = ";
@@ -26,8 +28,9 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
     @Override
     public boolean checkUser(String idEmployee, String password) {
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SQL_CHECK_PASSWORD + idEmployee);
+             PreparedStatement statement = connection.prepareStatement(SQL_CHECK_PASSWORD)) {
+            statement.setInt(1, Integer.parseInt(idEmployee));
+            ResultSet resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
                 resultSet.close();
@@ -114,8 +117,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connection(SQL_SAVE_TAKEN_BOOKS + "'" + libraryCard + "', '" + numberBook + "', '"
-                + dateReturnBook + "', '" + true + "')");
+
         connection("UPDATE library.books SET Количество_книг = " + ++lengthBooks + " WHERE Номер_книги = " + numberBook);
 
     }
@@ -186,23 +188,20 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         }
     }
 
+
+
     @Override
-    public String listNotReturnOfTheBooks() {
+    public String booksThatWereNotReturned() {
         String message = "";
-        String sqlReadingEmployeeData = "SELECT * FROM library.taken_books";
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sqlReadingEmployeeData);
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_TAKEN_BOOKS);
 
             while (resultSet.next()) {
-                System.out.println(resultSet.getString(3));
-                if (resultSet.getString(3) == "f") {
-                    message += "Читательский билет: " + String.valueOf(resultSet.getInt(1));
-                    message += "\nНомер книги: " + resultSet.getString(2);
-                    message += "\nВернули: " + resultSet.getString(3);
-                    message += "\n----------------------------------------------------------\n";
-                }
+                message += "Читательский билет: " + String.valueOf(resultSet.getInt(1));
+                message += "\nНомер книги: " + resultSet.getString(2);
+                message += "\n----------------------------------------------------------\n";
             }
             return message;
         } catch (SQLException e) {
@@ -243,8 +242,8 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
             resultSet.next();
         } catch (SQLException e) {
-            String message = "Введен неправильный данные!!!";
-            PrintText printText = new PrintText(message);
+            String MESSAGE = "Введен неправильный данные!!!";
+            PrintText printText = new PrintText(MESSAGE);
         }
     }
 

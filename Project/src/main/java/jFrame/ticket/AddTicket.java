@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static app.Main.newWindowJFrame;
+import static jFrame.utils.LaunchingANewWindow.*;
 
 public class AddTicket extends JFrame {
     JLabel enterSurname = new JLabel("Введите Фамилию: ");
@@ -20,26 +20,27 @@ public class AddTicket extends JFrame {
     JTextField address = new JTextField();
     JLabel enterPhoneNumber = new JLabel("Введите номер телефона: ");
     JTextField phoneNumber = new JTextField();
-    JButton addTicket = new JButton("Добавить");
+    JButton addTicket = new JButton("Добавить читателя");
     JButton back = new JButton("Вернуться назад");
 
     public AddTicket() throws HeadlessException {
-        JPanel buttonJPanel = new JPanel(new GridLayout());
+        super("Добавление читетеля");
+        JPanel jPanel = new JPanel(new FlowLayout());
 
-        buttonJPanel.add(enterSurname);
-        buttonJPanel.add(surname);
-        buttonJPanel.add(enterName);
-        buttonJPanel.add(name);
-        buttonJPanel.add(enterMiddleName);
-        buttonJPanel.add(middleName);
-        buttonJPanel.add(enterAddress);
-        buttonJPanel.add(address);
-        buttonJPanel.add(enterPhoneNumber);
-        buttonJPanel.add(phoneNumber);
-        buttonJPanel.add(addTicket);
-        buttonJPanel.add(back);
+        jPanel.add(enterSurname);
+        jPanel.add(surname);
+        jPanel.add(enterName);
+        jPanel.add(name);
+        jPanel.add(enterMiddleName);
+        jPanel.add(middleName);
+        jPanel.add(enterAddress);
+        jPanel.add(address);
+        jPanel.add(enterPhoneNumber);
+        jPanel.add(phoneNumber);
+        jPanel.add(addTicket);
+        jPanel.add(back);
 
-        add(buttonJPanel, BorderLayout.NORTH);
+        add(jPanel, BorderLayout.NORTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         addTicket.addActionListener(this::addTickets);
@@ -49,10 +50,7 @@ public class AddTicket extends JFrame {
     private void backForWindowJFrame(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            Ticket ticket = new Ticket();
-            ticket.setBounds(300, 300, 1000, 500);
-            ticket.setLayout(new GridLayout(3, 2, 2, 2));
-            ticket.setVisible(true);
+            startTicket();
         });
     }
 
@@ -64,10 +62,7 @@ public class AddTicket extends JFrame {
                 address.getName());
         addTicket.addActionListener(e -> {
             setVisible(false);
-            Ticket ticket = new Ticket();
-            ticket.setBounds(300, 300, 1000, 500);
-            ticket.setLayout(new GridLayout(3, 2, 2, 2));
-            ticket.setVisible(true);
+            startTicket();
         });
     }
 }

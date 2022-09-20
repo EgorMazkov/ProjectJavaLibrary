@@ -7,47 +7,41 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static app.Main.newWindowJFrame;
+import static jFrame.utils.LaunchingANewWindow.*;
 
 public class DeleteTicket extends JFrame {
-
     JLabel enterDeleteTicket = new JLabel("Введите какой читательский билет удалить: ");
-    JTextField deleteTicket = new JTextField();
+    JTextField deleteTickets = new JTextField();
     JButton back = new JButton("Вернуться назад");
 
     public DeleteTicket() throws HeadlessException {
+        super("Удаление читателя");
 
-        JPanel buttonJPanel = new JPanel(new GridLayout());
+        JPanel jPanel = new JPanel(new FlowLayout());
 
-        buttonJPanel.add(enterDeleteTicket);
-        buttonJPanel.add(deleteTicket);
-        buttonJPanel.add(back);
+        jPanel.add(enterDeleteTicket);
+        jPanel.add(deleteTickets);
+        jPanel.add(back);
 
-        add(buttonJPanel, BorderLayout.NORTH);
+        add(jPanel, BorderLayout.NORTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-        deleteTicket.addActionListener(this::deleleTicket);
+        deleteTickets.addActionListener(this::deleleTicket);
         back.addActionListener(this::backForWindowJFrame);
     }
 
     private void backForWindowJFrame(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            Ticket ticket = new Ticket();
-            ticket.setBounds(300, 300, 1000, 500);
-            ticket.setLayout(new GridLayout(3, 2, 2, 2));
-            ticket.setVisible(true);
+            startTicket();
         });
     }
 
     private void deleleTicket(ActionEvent actionEvent) {
-        MESSAGES_REPOSITORY.delete(deleteTicket.getText());
-        deleteTicket.addActionListener(e -> {
+        MESSAGES_REPOSITORY.delete(deleteTickets.getText());
+        deleteTickets.addActionListener(e -> {
             setVisible(false);
-            Ticket ticket = new Ticket();
-            ticket.setBounds(300, 300, 1000, 500);
-            ticket.setLayout(new GridLayout(3, 2, 2, 2));
-            ticket.setVisible(true);
+            startTicket();
         });
     }
 }

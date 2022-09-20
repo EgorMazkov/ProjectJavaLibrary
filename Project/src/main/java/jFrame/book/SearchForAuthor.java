@@ -1,29 +1,30 @@
-package jFrame.books;
+package jFrame.book;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static jFrame.books.Books.newSearchBook;
+import static jFrame.utils.LaunchingANewWindow.*;
 
 public class SearchForAuthor extends JFrame {
-        JLabel window = new JLabel();
-        JLabel enterNameAuhorBook = new JLabel("Введите автора книги");
-        JTextField author = new JTextField(10);
-        JButton search = new JButton("Поиск");
-        JButton back = new JButton("Вернуться назад");
+
+    JLabel enterNameAuthorBook = new JLabel("Введите автора книги");
+    JTextField author = new JTextField(10);
+    JButton search = new JButton("Поиск");
+    JButton back = new JButton("Вернуться назад");
+
     public SearchForAuthor() throws HeadlessException {
+        super("Поиск по автору книги");
 
-        JPanel buttonJPanel = new JPanel(new FlowLayout());
+        JPanel jPanel = new JPanel(new FlowLayout());
 
-        buttonJPanel.add(window);
-        buttonJPanel.add(enterNameAuhorBook);
-        buttonJPanel.add(author);
-        buttonJPanel.add(search);
-        buttonJPanel.add(back);
+        jPanel.add(enterNameAuthorBook);
+        jPanel.add(author);
+        jPanel.add(search);
+        jPanel.add(back);
 
-        add(buttonJPanel, BorderLayout.NORTH);
+        add(jPanel, BorderLayout.NORTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         search.addActionListener(this::search);
         back.addActionListener(this::backForSearchBooks);
@@ -32,7 +33,7 @@ public class SearchForAuthor extends JFrame {
     private void backForSearchBooks(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            newSearchBook();
+            startBook();
         });
     }
 
@@ -40,7 +41,7 @@ public class SearchForAuthor extends JFrame {
         MESSAGES_REPOSITORY.searchForAuthor(author.getText());
         search.addActionListener(e -> {
             setVisible(false);
-            newSearchBook();
+            startBook();
         });
     }
 }

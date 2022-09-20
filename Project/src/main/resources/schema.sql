@@ -48,9 +48,3 @@ CREATE table if not exists library.delivery
     foreign key (Чит_билет) references library.ticket
 );
 
-CREATE table if not exists library.taken_books
-(
-    Читательский_билет bigint,
-    Номер_книги integer,
-    Книгу_вернули boolean
-);

@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static app.Main.newWindowJFrame;
+import static jFrame.utils.LaunchingANewWindow.*;
 
 public class Ticket extends JFrame {
     JButton addTicket = new JButton("Добавить читателя");
@@ -16,7 +16,7 @@ public class Ticket extends JFrame {
     JButton back = new JButton("Вернуться назад");
 
     public Ticket() throws HeadlessException {
-        JPanel jPanel = new JPanel(new GridLayout());
+        JPanel jPanel = new JPanel(new FlowLayout());
 
         jPanel.add(addTicket);
         jPanel.add(deleteTicket);
@@ -40,27 +40,21 @@ public class Ticket extends JFrame {
     private void backForWindowJFrame(ActionEvent actionEvent) {
         back.addActionListener(e -> {
             setVisible(false);
-            newWindowJFrame();
+            startWindowJFrame();
         });
     }
 
     private void addTicket(ActionEvent actionEvent) {
         addTicket.addActionListener(e -> {
             setVisible(false);
-            AddTicket addTicket = new AddTicket();
-            addTicket.setVisible(true);
-            addTicket.setBounds(300, 300, 1000, 500);
-            addTicket.setLayout(new GridLayout(3, 2, 2, 2));
+            startAddTicket();
         });
     }
 
     private void deleteTicket(ActionEvent actionEvent) {
         deleteTicket.addActionListener(e -> {
             setVisible(false);
-            DeleteTicket deleteTicket = new DeleteTicket();
-            deleteTicket.setVisible(true);
-            deleteTicket.setBounds(300, 300, 1000, 500);
-            deleteTicket.setLayout(new GridLayout(3, 2, 2, 2));
+            startDeleteTicket();
         });
     }
 }

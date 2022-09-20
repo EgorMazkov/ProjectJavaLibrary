@@ -21,5 +21,6 @@ public interface MessagesRepository {
     String listForBooks();
     String listForTicket();
 
-    String listNotReturnOfTheBooks();
+
+    String booksThatWereNotReturned();
 }
