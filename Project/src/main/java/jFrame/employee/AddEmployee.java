@@ -1,13 +1,17 @@
 package jFrame.employee;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
+import static app.Main.passwordEncoder;
 import static jFrame.utils.LaunchingANewWindow.*;
 
 public class AddEmployee extends JFrame {
+
     public static int indexForNumberEmployee = 2;
     JLabel enterSurnameEmployee = new JLabel("Введите Фамилию :");
     JTextField surnameEmployee = new JTextField(20);

@@ -5,15 +5,14 @@ import jFrame.itils.repositories.MessagesRepository;
 import jFrame.itils.repositories.MessagesRepositoryJdbcImpl;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import static jFrame.utils.LaunchingANewWindow.startLibraryJFrame;
-// TODO сделать визуал JFrame для более удобного вывода
+import static jFrame.utils.LaunchingANewWindow.*;
 // TODO сделать читебельным окно "Добавть новую книгу" и "Добавить сотрудника" и "Добавить читателя"
+// TODO пофиксить проблему что при добавлении данные в бд добавляются 2 раза
 
 public class Main {
     public static final JdbcDataSource DATA_SOURCE = new JdbcDataSource();
@@ -40,7 +39,4 @@ public class Main {
             System.out.println(e.getMessage());
         }
     }
-
-
-
 }

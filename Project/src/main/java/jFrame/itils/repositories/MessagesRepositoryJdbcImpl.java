@@ -23,6 +23,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         this.dataSource = dataSource;
     }
 
+
     @Override
     public boolean checkUser(String idEmployee, String password) {
         try (Connection connection = dataSource.getConnection();

@@ -11,15 +11,15 @@ import static jFrame.utils.LaunchingANewWindow.*;
 
 public class AddTicket extends JFrame {
     JLabel enterSurname = new JLabel("Введите Фамилию: ");
-    JTextField surname = new JTextField();
+    JTextField surname = new JTextField(10);
     JLabel enterName = new JLabel("Введите Имя: ");
-    JTextField name = new JTextField();
+    JTextField name = new JTextField(10);
     JLabel enterMiddleName = new JLabel("Введите Отчество: ");
-    JTextField middleName = new JTextField();
+    JTextField middleName = new JTextField(10);
     JLabel enterAddress = new JLabel("Введите адрес проживания: ");
-    JTextField address = new JTextField();
+    JTextField address = new JTextField(10);
     JLabel enterPhoneNumber = new JLabel("Введите номер телефона: ");
-    JTextField phoneNumber = new JTextField();
+    JTextField phoneNumber = new JTextField(10);
     JButton addTicket = new JButton("Добавить читателя");
     JButton back = new JButton("Вернуться назад");
 

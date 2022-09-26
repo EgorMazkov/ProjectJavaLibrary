@@ -9,7 +9,7 @@ import static jFrame.utils.LaunchingANewWindow.*;
 import static jFrame.utils.LaunchingANewWindow.startBook;
 
 public class AddBooks extends JFrame {
-
+    int index = 0;
     JLabel enterNameBook = new JLabel("Введите название книги: ");
     JTextField nameBooks = new JTextField(10);
     JLabel enterBookAuthor = new JLabel("Введите автора книги: ");
@@ -52,11 +52,16 @@ public class AddBooks extends JFrame {
     }
 
     private void addBooksForSQL(ActionEvent actionEvent) {
+        if (index == 0) {
+            index++;
+            return;
+        }
         MESSAGES_REPOSITORY.addBooks(nameBooks.getText(), numberOfBooks.getText(),
                 bookAuthor.getText(), theYearOfPublishingBooks.getText());
         addBooks.addActionListener(e -> {
             setVisible(false);
             startBook();
+            index = 0;
         });
     }
 }
