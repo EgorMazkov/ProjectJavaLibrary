@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="windowJFrame"
+          class="jFrame.window.WindowJFrame"
+    scope="prototype"/>
+    <bean id="libraryJFrame"
+          class="jFrame.library.LibraryJFrame"
+    scope="prototype"/>
+    <bean id="books"
+          class="jFrame.book.Books"
+    scope="prototype"/>
+    <bean id="addBooks"
+          class="jFrame.book.AddBooks"
+    scope="prototype"/>
+    <bean id="returnOfTheBook"
+          class="jFrame.book.ReturnOfTheBook"
+    scope="prototype"/>
+    <bean id="searchForAuthor"
+          class="jFrame.book.SearchForAuthor"
+    scope="prototype"/>
+    <bean id="searchForNumber"
+          class="jFrame.book.SearchForNumber"
+    scope="prototype"/>
+    <bean id="delivery"
+          class="jFrame.book.DeliveryBooks"
+    scope="prototype"/>
+    <bean id="employee"
+          class="jFrame.employee.Employee"
+    scope="prototype"/>
+    <bean id="addOneEmployee"
+          class="jFrame.employee.AddEmployee"
+    scope="prototype">
+        <constructor-arg value="main"/>
+    </bean>
+    <bean
+          class="jFrame.employee.AddEmployee"
+    scope="prototype">
+        <constructor-arg value="windowJFrame"/>
+    </bean>
+    <bean id="ticket"
+          class="jFrame.ticket.Ticket"
+    scope="prototype"/>
+    <bean id="addTicket"
+          class="jFrame.ticket.AddTicket"
+    scope="prototype"/>
+    <bean id="deleteTicket"
+          class="jFrame.ticket.DeleteTicket"
+    scope="prototype"/>
+    <bean id="windowError"
+          class="jFrame.utils.WindowError"
+    scope="prototype"/>
+    <bean id="listOfBooksThatReadersHaveNotReturned"
+          class="jFrame.ticket.ListOfBooksThatReadersHaveNotReturned"
+    scope="prototype"/>
+</beans>
