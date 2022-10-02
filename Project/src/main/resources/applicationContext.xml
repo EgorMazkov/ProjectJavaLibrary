@@ -36,12 +36,13 @@
     scope="prototype"/>
     <bean id="addOneEmployee"
           class="jFrame.employee.AddEmployee"
-    scope="prototype">
+          scope="prototype">
         <constructor-arg value="main"/>
     </bean>
-    <bean
+
+    <bean id="addEmployee"
           class="jFrame.employee.AddEmployee"
-    scope="prototype">
+          scope="prototype">
         <constructor-arg value="windowJFrame"/>
     </bean>
     <bean id="ticket"

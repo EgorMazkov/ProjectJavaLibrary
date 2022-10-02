@@ -55,14 +55,14 @@ public class AddTicket extends JFrame {
     }
 
     private void addTickets(ActionEvent actionEvent) {
-        if (MESSAGES_REPOSITORY.checkAddTicket(phoneNumber.getText())) {
-            MESSAGES_REPOSITORY.addTicket(surname.getText(),
-                    name.getText(),
-                    middleName.getName(),
-                    phoneNumber.getName(),
-                    address.getName());
-        }
         addTicket.addActionListener(e -> {
+            if (MESSAGES_REPOSITORY.checkAddTicket(phoneNumber.getText())) {
+                MESSAGES_REPOSITORY.addTicket(surname.getText(),
+                        name.getText(),
+                        middleName.getName(),
+                        phoneNumber.getName(),
+                        address.getName());
+            }
             setVisible(false);
             startTicket();
         });

@@ -20,6 +20,7 @@ public class Books extends JFrame {
     JButton back = new JButton("Вернуться назад");
     JButton addBooks = new JButton("Добавить книгу");
     public Books() {
+        super("Книги");
         JPanel jPanel = new JPanel(new FlowLayout());
 
         jPanel.add(listForBooks, BorderLayout.CENTER);

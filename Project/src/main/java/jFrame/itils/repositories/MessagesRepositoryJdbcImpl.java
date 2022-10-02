@@ -10,12 +10,13 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
     private final DataSource dataSource;
     private final String SQL_CHECK_PASSWORD = "SELECT Пароль FROM library.treaty WHERE Номер_сотрудника = ?";
     private final String SQL_SELECT_DELIVERY = "SELECT * FROM library.delivery";
+    private final String SQL_CHECK_ONE_EMPLOYEE = "SELECT * FROM library.treaty";
     private final String SQL_INSERT_DELIVERY = "INSERT INTO library.delivery (Чит_билет, Код_книги, Дата_выдачи, Дата_возврата) VALUES (";
     private final String SQL_CHECK_NUMBER_BOOKS = "SELECT Количество_книг FROM library.books WHERE Номер_книги = ";
     private final String SQL_SEARCH_FOR_AUTHOR = "SELECT * library.books WHERE Автор = ";
     private final String SQL_SEARCH_FOR_NUMBER = "SELECT * FROM library.books WHERE Номер_книги = ";
     private final String SQL_ADD_BOOKS = "INSERT INTO library.books (Название_книги, Количество_книг, Автор, Год_издания) VALUES ";
-    private final String SQL_ADD_EMPLOYEE = "INSERT INTO library.treaty (Номер_сотрудника, Пароль, Должность, Номер_телефона, Фамилия, Имя, Отчество, ИНН, СНИЛС, Дата_рождения, Дата_начала_работы) VALUES (";
+    private final String SQL_ADD_EMPLOYEE = "INSERT INTO library.treaty (Пароль, Должность, Номер_телефона, Фамилия, Имя, Отчество, ИНН, СНИЛС, Дата_рождения, Дата_начала_работы) VALUES (";
     private final String SQL_DELETE_TICKET = "DELETE FROM library.ticket WHERE Читательский_билет = ";
     private final String SQL_SAVE_TICKET = "INSERT INTO library.ticket (Фамилия, Имя, Отчество, Адрес, Номер_телефона) VALUES (";
 
@@ -23,6 +24,21 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         this.dataSource = dataSource;
     }
 
+
+    @Override
+    public boolean checkOneEmployee() {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SQL_CHECK_ONE_EMPLOYEE);
+
+            return resultSet.next();
+
+        } catch (SQLException e) {
+            String MESSAGE = "Создате первого сотрудника";
+            PrintText printText = new PrintText(MESSAGE);
+        }
+        return false;
+    }
 
     @Override
     public boolean checkUser(String idEmployee, String password) {
@@ -96,7 +112,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
     public void addEmployee(String surname, String name, String middleName, String INN, String SNILS, String dateOfBirth,
                             String startDate, String password, String post, String phoneNumber, int index) {
 
-        String sqlAddEmployee = SQL_ADD_EMPLOYEE + "'" + index + "', '" + password + "', '" + post + "', '"
+        String sqlAddEmployee = SQL_ADD_EMPLOYEE + "'" + password + "', '" + post + "', '"
                 + phoneNumber + "', '" + surname + "', '" + name + "', '" + middleName + "', '" + INN + "', '"
                 + SNILS + "', '" + dateOfBirth + "', '" + startDate + "')";
 
@@ -327,6 +343,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
             resultSet.next();
         } catch (SQLException e) {
             String ea = String.valueOf(e);
+            System.out.println(ea);
             if (!ea.matches("\\w+:Запрос не вернул результатов"))
                 return;
             String MESSAGE = "Введен неправильный данные!!!";

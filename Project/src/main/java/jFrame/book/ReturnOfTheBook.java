@@ -45,10 +45,10 @@ public class ReturnOfTheBook extends JFrame {
     }
 
     private void saveReturnOfTheBook(ActionEvent actionEvent) {
-        MESSAGES_REPOSITORY.returnBook(libraryCard.getText(),
-                dateReturnOfTheBook.getText(),
-                numberBook.getText());
         save.addActionListener(e -> {
+            MESSAGES_REPOSITORY.returnBook(libraryCard.getText(),
+                    dateReturnOfTheBook.getText(),
+                    numberBook.getText());
             setVisible(false);
             startBook();
         });

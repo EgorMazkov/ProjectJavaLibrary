@@ -52,13 +52,13 @@ public class AddBooks extends JFrame {
     }
 
     private void addBooksForSQL(ActionEvent actionEvent) {
-        if (index == 0) {
-            index++;
-            return;
-        }
-        MESSAGES_REPOSITORY.addBooks(nameBooks.getText(), numberOfBooks.getText(),
-                bookAuthor.getText(), theYearOfPublishingBooks.getText());
         addBooks.addActionListener(e -> {
+            if (index == 0) {
+                index++;
+                return;
+            }
+            MESSAGES_REPOSITORY.addBooks(nameBooks.getText(), numberOfBooks.getText(),
+                    bookAuthor.getText(), theYearOfPublishingBooks.getText());
             setVisible(false);
             startBook();
             index = 0;

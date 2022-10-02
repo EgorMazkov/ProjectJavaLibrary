@@ -24,7 +24,8 @@ CREATE table if not exists library.treaty
     ИНН integer,
     СНИЛС varchar (11),
     Дата_рождения date,
-    Дата_начала_работы varchar
+    Дата_начала_работы varchar,
+    foreign key (Номер_сотрудника) references library.treaty
 );
 
 CREATE table if not exists library.ticket

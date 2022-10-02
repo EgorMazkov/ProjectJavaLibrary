@@ -76,10 +76,16 @@ public class LaunchingANewWindow {
         employee.setVisible(true);
     }
 
+    public static void startOneEmployee() {
+        AddEmployee addEmployee = context.getBean("addOneEmployee", AddEmployee.class);
+        addEmployee.setBounds(700, 300, 400, 500);
+        addEmployee.setLayout(new GridLayout(30, 30, 2, 2));
+        addEmployee.setVisible(true);
+    }
     public static void startAddEmployee() {
         AddEmployee addEmployee = context.getBean("addEmployee", AddEmployee.class);
         addEmployee.setBounds(700, 300, 400, 500);
-        addEmployee.setLayout(layout);
+        addEmployee.setLayout(new FlowLayout());
         addEmployee.setVisible(true);
     }
 

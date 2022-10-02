@@ -7,12 +7,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static app.Main.MESSAGES_REPOSITORY;
-import static app.Main.passwordEncoder;
 import static jFrame.utils.LaunchingANewWindow.*;
 
 public class AddEmployee extends JFrame {
 
     public static int indexForNumberEmployee = 2;
+    private String path;
     JLabel enterSurnameEmployee = new JLabel("Введите Фамилию :");
     JTextField surnameEmployee = new JTextField(20);
     JLabel enterNameEmployee = new JLabel("Введите Имя :");
@@ -36,8 +36,11 @@ public class AddEmployee extends JFrame {
     JTextField passwordEmployee = new JTextField(20);
     JButton back = new JButton("Вернуться назад");
 
-    public AddEmployee() throws HeadlessException {
+    public AddEmployee(String path) {
         super("Добавление сотрудника");
+
+        this.path = path;
+
         JPanel jPanel = new JPanel(new FlowLayout());
 
         jPanel.add(enterSurnameEmployee, BorderLayout.CENTER);
@@ -78,22 +81,26 @@ public class AddEmployee extends JFrame {
     }
 
     private void addEmployeeFordb(ActionEvent actionEvent) {
-        MESSAGES_REPOSITORY.addEmployee(
-                surnameEmployee.getText(),
-                nameEmployee.getText(),
-                middleNameEmployee.getText(),
-                INNEmployee.getText(),
-                SNILSEmployee.getText(),
-                dateOfBirthEmployee.getText(),
-                startDateEmployee.getText(),
-                passwordEmployee.getText(),
-                postEmployee.getText(),
-                phoneNumberEmployee.getText(),
-                indexForNumberEmployee++
-        );
         addEmployee.addActionListener(e -> {
             setVisible(false);
-            startEmployee();
+            MESSAGES_REPOSITORY.addEmployee(
+                    surnameEmployee.getText(),
+                    nameEmployee.getText(),
+                    middleNameEmployee.getText(),
+                    INNEmployee.getText(),
+                    SNILSEmployee.getText(),
+                    dateOfBirthEmployee.getText(),
+                    startDateEmployee.getText(),
+                    passwordEmployee.getText(),
+                    postEmployee.getText(),
+                    phoneNumberEmployee.getText(),
+                    indexForNumberEmployee++
+            );
+            if (path.equals("main")) {
+                startWindowJFrame();
+            } else {
+                startEmployee();
+            }
         });
     }
 }
