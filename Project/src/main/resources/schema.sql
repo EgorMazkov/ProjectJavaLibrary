@@ -35,7 +35,9 @@ CREATE table if not exists library.ticket
     Имя varchar (40),
     Отчество varchar (40),
     Адрес varchar (100),
-    Номер_телефона varchar(11)
+    Номер_телефона varchar(11),
+    Абонемент_на_количество_книг int,
+    Абонемент varchar
 );
 
 CREATE table if not exists library.delivery
